@@ -1,6 +1,11 @@
-#react-responsive-audio-player
+#react-responsive-audio-player 修改版
 
 ![react-responsive-audio-player in action](demo.gif)
+
+### 我的修改说明
+
+- 增加 playbackRate 属性，父组件通过 props 传入，修改后会生效。要获取音频 playbackRate 请用 `this.audio.playbackRate`
+- 增加切换播放速度按钮，默认在 `0.7, 1, 1.25, 1.5, 2` 之间切换
 
 ### [see a live demo here](https://benwiley4000.github.io/react-responsive-audio-player/)
 

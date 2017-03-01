@@ -140,6 +140,21 @@ $audio_player_progress_bg_color: #4a4a4a !default;
     font-size: $audio_player_time_font_size;
   }
 
+  .audio_playbackRate {
+    display: table-cell;
+    vertical-align: bottom;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    color: #ddd;
+    cursor: pointer;
+
+    .rate_symbol {
+      font-size: 0.8em;
+    }
+  }
+
   .audio_button {
     padding-left: $audio_player_btn_padding;
     padding-right: $audio_player_btn_padding;
@@ -226,6 +241,47 @@ $audio_player_progress_bg_color: #4a4a4a !default;
       border-left: 16px solid $audio_player_play_btn_border_color;
       border-top: 16px solid transparent;
       border-bottom: 16px solid transparent;
+    }
+  }
+
+  @media screen and (max-width: 360px) {
+    .audio_controls {
+      margin: 0 2px;
+    }
+    .audio_button {
+      margin: 0 4px;
+      padding: 0 4px;
+    }
+    .skip_button .right_facing_triangle {
+      border-width: 12px 0 12px 12px; 
+    }
+
+    .play_pause_button .play_pause_inner {
+      width: 24px;
+      height: 24px;
+    }
+    .play_pause_button .triangle_1,
+    .play_pause_button .triangle_2 {
+      border-width: 12px 24px 12px 0;
+    }
+      
+    .audio_info {
+        font-size: .8em;
+        display: block;
+        margin-right: .2em;
+            white-space: normal;
+    }
+    .audio_info_marquee {
+      margin: 0 3px;
+      width: 100%;
+    }
+    .audio_time_progress {
+      margin-right: 2px;
+      font-size: .9em;
+    }
+    .audio_playbackRate {
+      width: auto;
+      padding-right: .2em;
     }
   }
 

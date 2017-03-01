@@ -4,6 +4,8 @@ import classNames from 'classnames';
 
 import './index.scss';
 
+const PLAY_RATES = [0.7, 1, 1.25, 1.5, 2];
+
 const log = console.log.bind(console);
 const logError = console.error ? console.error.bind(console) : log;
 const logWarning = console.warn ? console.warn.bind(console) : log;
@@ -88,10 +90,11 @@ class AudioPlayer extends React.Component {
        * the new time is visually previewed before the
        * audio seeks.
        */
-      displayedTime: 0
+      displayedTime: 0,
     };
 
     this.state = this.defaultState;
+    this.state.playbackRate = this.props.playbackRate || 1;
 
     // html audio element used for playback
     this.audio = null;
@@ -129,6 +132,7 @@ class AudioPlayer extends React.Component {
 
     // add event listeners on the audio element
     audio.preload = 'metadata';
+    audio.defaultPlaybackRate = this.state.playbackRate
     audio.addEventListener('play', this.audioPlayListener);
     audio.addEventListener('pause', this.audioPauseListener);
     audio.addEventListener('ended', this.audioEndListener);
@@ -180,6 +184,10 @@ class AudioPlayer extends React.Component {
     // Update media event listeners that may have changed
     this.removeMediaEventListeners(this.props.onMediaEvent);
     this.addMediaEventListeners(nextProps.onMediaEvent);
+
+    if (nextProps.playbackRate) {
+      this.changePlayRate(nextProps.playbackRate);
+    }
 
     const newPlaylist = nextProps.playlist;
     if (!newPlaylist || !newPlaylist.length) {
@@ -369,6 +377,35 @@ class AudioPlayer extends React.Component {
     this.audio.currentTime = displayedTime;
   }
 
+  changePlayRate(rate) {
+    const oldRate = this.state.playbackRate
+    if (!rate) {
+      let curIndex = 0;
+      PLAY_RATES.some((rate, index) => {
+        if (rate == oldRate) {
+          curIndex = index;
+          return true
+        }
+      });
+
+      let nextIndex = curIndex + 1;
+      if (nextIndex > PLAY_RATES.length - 1)
+        nextIndex = 0
+    
+      rate = PLAY_RATES[nextIndex] || 1
+    } else if (PLAY_RATES.indexOf(rate) == -1) {
+      rate = 1
+    }
+
+    if (rate != oldRate) {
+      
+    }
+    this.audio.playbackRate = rate
+    this.setState({
+      playbackRate: rate
+    });
+  }
+
   render () {
     const activeIndex = this.state.activeTrackIndex;
     const displayText = this.props.playlist ? (
@@ -464,6 +501,11 @@ class AudioPlayer extends React.Component {
           </div>
         </div>
 
+        <div className="audio_playbackRate" title="点击切换播放速度"
+          onClick={(e) => this.changePlayRate() }>
+          <span>{this.state.playbackRate}</span>
+          <span className="rate_symbol">x</span>
+        </div>
       </div>
     );
   }
