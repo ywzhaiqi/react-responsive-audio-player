@@ -132,7 +132,7 @@ class AudioPlayer extends React.Component {
 
     // add event listeners on the audio element
     audio.preload = 'metadata';
-    audio.defaultPlaybackRate = this.state.playbackRate;
+    this.changePlayRate(this.props.playbackRate)
     audio.addEventListener('play', this.audioPlayListener);
     audio.addEventListener('pause', this.audioPauseListener);
     audio.addEventListener('ended', this.audioEndListener);
@@ -378,6 +378,8 @@ class AudioPlayer extends React.Component {
   }
 
   changePlayRate(rate) {
+    if (!this.audio) return;
+
     const oldRate = this.state.playbackRate
     if (!rate) {
       let curIndex = 0;
@@ -399,6 +401,7 @@ class AudioPlayer extends React.Component {
 
     if (rate != oldRate) {
       this.audio.playbackRate = rate
+      this.audio.defaultPlaybackRate = rate
       this.setState({
         playbackRate: rate
       });
